@@ -42,6 +42,7 @@ var ANCESTRY_FILE = "[\n  " + [
 
 var ancestry = JSON.parse(ANCESTRY_FILE);
 
+
 function average(array) {
     function plus(a, b) { return a + b; }
     return array.reduce(plus) / array.length;
@@ -53,15 +54,10 @@ ancestry.forEach(function(person) {
 });
 
 
-function filter(array, test) {
-    var passed = [];
-    for (var i = 0; i < array.length; i++) {
-        if (test(array[i]))
-            passed.push(array[i]);
-    }
-    return passed;
-}
+var differences = ancestry.filter(function(person) {
+    return byName[person.mother] != null;
+}).map(function(person) {
+    return person.born - byName[person.mother].born;
+});
 
-console.log(filter(ancestry, function(person) {
-    return person.mother != null;
-}));
+console.log(average(differences));
